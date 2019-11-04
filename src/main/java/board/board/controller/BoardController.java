@@ -1,4 +1,4 @@
-package board.controller;
+package board.board.controller;
 
 import java.util.List;
 
@@ -7,7 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import board.dto.BoardDto;
+import board.board.dto.BoardDto;
+import board.board.service.BoardService;
 
 @Controller
 public class BoardController {
