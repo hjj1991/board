@@ -31,8 +31,13 @@ dependencies {
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.1'
 	compileOnly 'org.projectlombok:lombok'
 	compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.5.1'
+	compile 'mysql:mysql-connector-java:5.1.46'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
+	//runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
+	// https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc
+	compile group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '7.4.1.jre8'
+	compile group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4.1', version: '1.16'
+	
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
