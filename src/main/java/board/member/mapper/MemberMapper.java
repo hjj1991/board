@@ -13,4 +13,6 @@ public interface MemberMapper {
 
 	int checkId(String userId) throws Exception;
 
+	void signUp(MemberDto memberDto) throws Exception;
+
 }

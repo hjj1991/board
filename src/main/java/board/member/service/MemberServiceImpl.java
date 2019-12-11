@@ -26,4 +26,10 @@ public class MemberServiceImpl implements MemberService {
 		return memberMapper.checkId(userId);
 	}
 
+	@Override
+	public void signUp(MemberDto memberDto) throws Exception {
+		// TODO Auto-generated method stub
+		memberMapper.signUp(memberDto);
+	}
+
 }

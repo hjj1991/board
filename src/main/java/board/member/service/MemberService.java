@@ -10,4 +10,6 @@ public interface MemberService {
 
 	int checkId(String userId) throws Exception;
 
+	void signUp(MemberDto memberDto) throws Exception;
+
 }

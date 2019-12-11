@@ -30,5 +30,27 @@
 				) as isChk
 		]]>		
 	</select>
+	<insert id="signUp" parameterType="board.member.dto.MemberDto">
+		<![CDATA[
+			INSERT INTO member
+			(
+				user_id,
+				user_pw,
+				name,
+				nick_name,
+				email_addr,
+				create_Date
+			)	
+			VALUES
+			(
+				#{userId},
+				#{userPw},
+				#{name},
+				#{nickName},
+				#{emailAddr},
+				NOW()
+			)	
+			]]>
+	</insert>
 	
 </mapper>
