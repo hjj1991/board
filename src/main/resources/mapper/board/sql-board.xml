@@ -18,6 +18,32 @@
 			ORDER BY board_idx DESC
 		]]>
 	</select>
+	<select id="getBoardListCnt" resultType="int">
+		<![CDATA[
+			SELECT
+				COUNT(*)
+			FROM
+				t_board
+			WHERE
+				board_type = '0'
+		]]>
+	</select>
+	
+	<select id="selectBoardListApi" parameterType="map" resultType="board.board.dto.BoardDto">
+		<![CDATA[
+			SELECT
+				board_idx,
+				title,
+				contents,
+				hit_cnt,
+				DATE_FORMAT(created_datetime, '%Y.%m.%d %H:%i:%s') AS created_datetime
+			FROM
+				t_board
+			WHERE
+				deleted_yn = 'N'
+			LIMIT #{startNum},#{endNum}
+		]]>
+	</select>
 	
 	<insert id="insertBoard" parameterType="board.board.dto.BoardDto" useGeneratedKeys="true" keyProperty="boardIdx">
 		<![CDATA[

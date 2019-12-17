@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Param;
 
 import board.board.dto.BoardDto;
 import board.board.dto.BoardFileDto;
+import board.board.dto.RestBoardDto;
+import board.common.Pagination;
 
 
 @Mapper
@@ -28,5 +30,9 @@ public interface BoardMapper {
 	List<BoardFileDto> selectBoardFileList(int boardIdx) throws Exception;
 
 	BoardFileDto selectBoardFileInformation(@Param("idx") int idx, @Param("boardIdx") int boardIdx);
+	
+	int getBoardListCnt() throws Exception;
+
+	List<BoardDto> selectBoardListApi(@Param("startNum") int idx, @Param("endNum") int boardIdxn) throws Exception;
 	
 }

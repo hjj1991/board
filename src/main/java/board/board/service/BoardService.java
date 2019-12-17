@@ -6,6 +6,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import board.board.dto.BoardDto;
 import board.board.dto.BoardFileDto;
+import board.board.dto.RestBoardDto;
+import board.common.Pagination;
 
 
 public interface BoardService {
@@ -21,5 +23,7 @@ public interface BoardService {
 	void deleteBoard(int boardIdx) throws Exception;
 	
 	BoardFileDto selectBoardFileInformation(int idx, int boardIdx) throws Exception;
+
+	RestBoardDto selectBoardListApi(Pagination pagination) throws Exception;
 	
 }

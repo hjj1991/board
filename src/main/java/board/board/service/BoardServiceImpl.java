@@ -1,5 +1,6 @@
 package board.board.service;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,12 +11,17 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import com.mysql.fabric.Server;
+
 import lombok.extern.slf4j.Slf4j;
 
 import board.board.dto.BoardDto;
 import board.board.dto.BoardFileDto;
+import board.board.dto.RestBoardDto;
 import board.board.mapper.BoardMapper;
 import board.common.FileUtils;
+import board.common.Pagination;
 
 
 @Slf4j
@@ -31,6 +37,7 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	public List<BoardDto> selectBoardList() throws Exception {
+		
 		return boardMapper.selectBoardList();
 	}
 
@@ -87,5 +94,35 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public BoardFileDto selectBoardFileInformation(int idx, int boardIdx) throws Exception {		
 		return boardMapper.selectBoardFileInformation(idx, boardIdx);
+	}
+
+	@Override
+	public RestBoardDto selectBoardListApi(Pagination pagination) throws Exception {
+		
+		// TODO Auto-generated method stub
+		RestBoardDto restBoardDto = new RestBoardDto();
+		int startNum = (pagination.getPage() -1) * pagination.getPageSize();
+		int endNum = pagination.getPageSize();
+		int pageCount = (int)Math.ceil(boardMapper.getBoardListCnt()/pagination.getPageSize()); //총페이지 수
+		HashMap<String, String> links = new HashMap<String, String>();
+		String baseUrl = "http://localhost:8080/api/board?";
+		
+		if(1 < pagination.getPage()) {
+			links.put("prev", baseUrl + "page=" + (pagination.getPage() - 1) + "&pageSize=" + pagination.getPageSize());
+		}
+		if(pageCount > pagination.getPage()) {
+			links.put("next", baseUrl + "page=" + (pagination.getPage() + 1) + "&pageSize=" + pagination.getPageSize());
+		}
+		
+		
+		restBoardDto.setResults(boardMapper.selectBoardListApi(startNum, endNum));
+		restBoardDto.setPageCount(pageCount);
+		restBoardDto.setLinks(links);
+//		restBoardDto.setFirst("");
+//		restBoardDto.setLast("");
+//		restBoardDto.setNext("");
+//		restBoardDto.setPrev("");
+		
+		return restBoardDto;
 	}
 }
