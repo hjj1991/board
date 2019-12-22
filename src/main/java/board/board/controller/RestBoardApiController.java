@@ -37,7 +37,6 @@ public class RestBoardApiController {
 	//public BoardDto openBoardDetail(@RequestParam("boardIdx") int boardIdx) throws Exception{
 	@RequestMapping(value="/api/board/{boardIdx}", method=RequestMethod.GET)
 	public BoardDto openBoardDetail(@PathVariable("boardIdx") int boardIdx) throws Exception{
-		
 		return boardService.selectBoardDetail(boardIdx);
 	}
 	
