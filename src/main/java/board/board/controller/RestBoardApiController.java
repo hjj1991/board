@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import board.board.dto.BoardCommentDto;
 import board.board.dto.BoardDto;
 import board.board.dto.RestBoardDto;
 import board.board.service.BoardService;
@@ -50,5 +51,11 @@ public class RestBoardApiController {
 	public String deleteBoard(@PathVariable("boardIdx") int boardIdx) throws Exception{
 		boardService.deleteBoard(boardIdx);
 		return "redirect:/board";
+	}
+	
+	//댓글관련 Controller
+	@RequestMapping(value="/api/board/comment/{boardIdx}", method=RequestMethod.GET)
+	public BoardCommentDto openComentList(@PathVariable("boardIdx") int boardIdx) throws Exception{
+		return boardService.selectCommentList(boardIdx);
 	}
 }

@@ -28,7 +28,7 @@
 				board_type = '0'
 		]]>
 	</select>
-	
+	<!-- DATE_FORMAT(created_datetime, '%Y.%m.%d %H:%i:%s') AS created_datetime -->
 	<select id="selectBoardListApi" parameterType="map" resultType="board.board.dto.BoardDto">
 		<![CDATA[
 			SELECT
@@ -36,12 +36,29 @@
 				title,
 				contents,
 				hit_cnt,
-				DATE_FORMAT(created_datetime, '%Y.%m.%d %H:%i:%s') AS created_datetime
+				DATE_FORMAT(created_datetime, '%Y.%m.%d') AS created_datetime
+				
 			FROM
 				t_board
 			WHERE
 				deleted_yn = 'N'
 			LIMIT #{startNum},#{endNum}
+		]]>
+	</select>
+	
+	<select id="selectCommentList" parameterType="int" resultType="board.board.dto.BoardCommentDto">
+		<![CDATA[
+			SELECT
+				comment_num,
+				comment_board_idx,
+				comment_contents,
+				comment_creator_id,
+				comment_created_datetime
+			FROM
+				t_comment
+			WHERE
+				comment_board_idx = #{boardIdx}
+			ORDER BY comment_created_datetime DESC
 		]]>
 	</select>
 	

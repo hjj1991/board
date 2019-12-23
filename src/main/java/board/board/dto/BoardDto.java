@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.Data;
 @Data
 public class BoardDto {
+	private int board_type;
 	private int boardIdx;
 	private String title;
 	private String contents;

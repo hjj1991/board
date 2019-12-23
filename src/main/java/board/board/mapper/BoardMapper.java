@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import board.board.dto.BoardCommentDto;
 import board.board.dto.BoardDto;
 import board.board.dto.BoardFileDto;
 import board.board.dto.RestBoardDto;
@@ -34,5 +35,7 @@ public interface BoardMapper {
 	int getBoardListCnt() throws Exception;
 
 	List<BoardDto> selectBoardListApi(@Param("startNum") int idx, @Param("endNum") int boardIdxn) throws Exception;
+
+	BoardCommentDto selectCommentList(int boardIdx) throws Exception;
 	
 }

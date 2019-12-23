@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import board.board.dto.BoardCommentDto;
 import board.board.dto.BoardDto;
 import board.board.dto.BoardFileDto;
 import board.board.dto.RestBoardDto;
@@ -25,5 +26,7 @@ public interface BoardService {
 	BoardFileDto selectBoardFileInformation(int idx, int boardIdx) throws Exception;
 
 	RestBoardDto selectBoardListApi(Pagination pagination) throws Exception;
+
+	BoardCommentDto selectCommentList(int boardIdx) throws Exception;
 	
 }

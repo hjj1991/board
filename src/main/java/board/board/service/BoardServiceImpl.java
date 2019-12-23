@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.mysql.fabric.Server;
 
 import lombok.extern.slf4j.Slf4j;
-
+import board.board.dto.BoardCommentDto;
 import board.board.dto.BoardDto;
 import board.board.dto.BoardFileDto;
 import board.board.dto.RestBoardDto;
@@ -124,5 +124,11 @@ public class BoardServiceImpl implements BoardService {
 //		restBoardDto.setPrev("");
 		
 		return restBoardDto;
+	}
+
+	@Override
+	public BoardCommentDto selectCommentList(int boardIdx) throws Exception {
+		// TODO Auto-generated method stub
+		return boardMapper.selectCommentList(boardIdx);
 	}
 }
