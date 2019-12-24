@@ -9,6 +9,8 @@ public class Pagination {
 //	private int rangeSize = 10;				//초기값으로 페이지범위를 10으로 셋팅
 	private int page;						//현재 페이지
 	private int pageSize;
+	private String searchTarget;
+	private String searchKeyword;
 //	private int range;						//현재 페이지 범위
 //	private String next;					//다음페이지
 //	private String last;					//마지막 페이지

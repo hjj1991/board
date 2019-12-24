@@ -103,7 +103,9 @@ public class BoardServiceImpl implements BoardService {
 		RestBoardDto restBoardDto = new RestBoardDto();
 		int startNum = (pagination.getPage() -1) * pagination.getPageSize();
 		int endNum = pagination.getPageSize();
-		int pageCount = (int)Math.ceil(boardMapper.getBoardListCnt()/pagination.getPageSize()); //총페이지 수
+		String searchTarget = pagination.getSearchTarget();
+		String searchKeyword = pagination.getSearchKeyword();
+		int pageCount = (int)Math.ceil(boardMapper.getBoardListCnt(searchTarget, searchKeyword)/pagination.getPageSize()); //총페이지 수
 		HashMap<String, String> links = new HashMap<String, String>();
 		String baseUrl = "http://localhost:8080/api/board?";
 		
@@ -115,7 +117,7 @@ public class BoardServiceImpl implements BoardService {
 		}
 		
 		
-		restBoardDto.setResults(boardMapper.selectBoardListApi(startNum, endNum));
+		restBoardDto.setResults(boardMapper.selectBoardListApi(startNum, endNum, searchTarget, searchKeyword));
 		restBoardDto.setPageCount(pageCount);
 		restBoardDto.setLinks(links);
 //		restBoardDto.setFirst("");

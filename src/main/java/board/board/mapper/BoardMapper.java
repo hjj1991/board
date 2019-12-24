@@ -32,9 +32,9 @@ public interface BoardMapper {
 
 	BoardFileDto selectBoardFileInformation(@Param("idx") int idx, @Param("boardIdx") int boardIdx);
 	
-	int getBoardListCnt() throws Exception;
+	int getBoardListCnt(@Param("searchTarget") String searchTarget, @Param("searchKeyword") String searchKeyword) throws Exception;
 
-	List<BoardDto> selectBoardListApi(@Param("startNum") int idx, @Param("endNum") int boardIdxn) throws Exception;
+	List<BoardDto> selectBoardListApi(@Param("startNum") int startNum, @Param("endNum") int endNum, @Param("searchTarget") String searchTarget, @Param("searchKeyword") String searchKeyword) throws Exception;
 
 	BoardCommentDto selectCommentList(int boardIdx) throws Exception;
 	

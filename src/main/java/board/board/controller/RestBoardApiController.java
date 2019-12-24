@@ -1,8 +1,13 @@
 package board.board.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,8 +34,23 @@ public class RestBoardApiController {
 	}
 	
 	@RequestMapping(value="/api/board/write", method=RequestMethod.POST)
-	public void insertBoard(@RequestBody BoardDto board) throws Exception{
+	public ResponseEntity<?> insertBoard(@RequestBody BoardDto board, BindingResult result) throws Exception{
+		
+		if(result.hasErrors()) {
+			
+			List<FieldError> errors = result.getFieldErrors();
+			HashMap<String, String> errorList = new HashMap<String, String>();
+			 for (FieldError error : errors ) {
+				 errorList.put(error.getField(), error.getDefaultMessage());
+			        //System.out.println (error.getField() + " - " + error.getDefaultMessage());
+			 }
+			 
+			 
+			return new ResponseEntity<>(errorList, HttpStatus.BAD_REQUEST); 
+		}
 		boardService.insertBoard(board, null);
+		
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	
