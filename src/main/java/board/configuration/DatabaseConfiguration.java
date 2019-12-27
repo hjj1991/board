@@ -1,6 +1,9 @@
 package board.configuration;
 
+import java.util.Properties;
+
 import javax.sql.DataSource;
+
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -30,6 +33,12 @@ public class DatabaseConfiguration {
 	@ConfigurationProperties(prefix="spring.datasource.hikari")
 	public HikariConfig hikariConfig() {
 		return new HikariConfig();
+	}
+
+	@Bean
+	@ConfigurationProperties(prefix="spring.jpa")
+	public Properties hibernateConfig() {
+		return new Properties();
 	}
 	
 	@Bean
