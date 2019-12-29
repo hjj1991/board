@@ -22,6 +22,7 @@ import board.board.dto.BoardFileDto;
 import board.board.entity.BoardEntity;
 import board.board.entity.BoardFileEntity;
 import board.board.service.BoardService;
+import board.board.service.JpaBoardService;
 
 @Controller
 public class JpaBoardController {

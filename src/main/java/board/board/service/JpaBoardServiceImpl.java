@@ -4,13 +4,16 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import board.board.entity.BoardEntity;
 import board.board.entity.BoardFileEntity;
+import board.board.repository.JpaBoardRepository;
 import board.common.FileUtils;
 
+@Service
 public class JpaBoardServiceImpl implements JpaBoardService{
 	
 	@Autowired
@@ -21,7 +24,7 @@ public class JpaBoardServiceImpl implements JpaBoardService{
 	
 	@Override
 	public List<BoardEntity> selectBoardList() throws Exception {
-		return jpaBoardRepository.finAllByOrderByBoardIdxDesc();
+		return jpaBoardRepository.findAllByOrderByBoardIdxDesc();
 	}
 	
 	@Override
