@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import board.api.advice.exception.CUserNotFoundException;
 import board.api.service.ResponseService;
 import board.configuration.security.JwtTokenProvider;
 import board.member.dto.MemberDto;
+import board.member.dto.MemberLoginDto;
 import board.member.entity.MemberEntity;
 import board.member.repository.JpaMemberRepository;
 import board.model.response.CommonResult;
@@ -44,13 +46,11 @@ public class SignController {
 	private final PasswordEncoder passwordEncoder;
 
 	@ApiOperation(value = "로그인", notes = "아이디로그인을 한다.")
-	@GetMapping(value = "/signin")
-	public SingleResult<String> signin(@ApiParam(value = "회원ID ", required = true) @RequestParam String userId,
-			@ApiParam(value = "비밀번호", required = true) @RequestParam String password) {
+	@PostMapping(value = "/signin")
+	public SingleResult<String> signin(@RequestBody MemberLoginDto memberLoginDto) {
 
-		MemberEntity user = jpaMemberRepository.findByUserId(userId).orElseThrow(CUserNotFoundException::new);
-		System.out.println(user);
-		if (!passwordEncoder.matches(password, user.getPassword()))
+		MemberEntity user = jpaMemberRepository.findByUserId(memberLoginDto.getUserId()).orElseThrow(CUserNotFoundException::new);
+		if (!passwordEncoder.matches(memberLoginDto.getPassword(), user.getPassword()))
 			throw new CUserNotFoundException();
 
 		return responseService.getSingleResult(jwtTokenProvider.createToken(user.getUsername(), user.getRoles()));
