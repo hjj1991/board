@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import board.api.advice.exception.CUserNotFoundException;
+import board.api.advice.exception.PasswordNotMatchException;
 import board.api.service.ResponseService;
 import board.model.response.CommonResult;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,19 @@ public class ExceptionAdvice {
     @ExceptionHandler(CUserNotFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult userNotFoundException(HttpServletRequest request, CUserNotFoundException e) {
-        return responseService.getFailResult();
+        return responseService.getFailResult(Integer.valueOf(getMessage("-1")), getMessage("사용자가 존재하지 않습니다."));
     }
+    
+    @ExceptionHandler(PasswordNotMatchException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult passwordNotMatchExcepiton(HttpServletRequest request, PasswordNotMatchException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("-1")), getMessage("비밀번호가 일치하지 않습니다."));
+    }
+
+private String getMessage(String string) {
+	// TODO Auto-generated method stub
+	return string;
+}
+    
+    
 }

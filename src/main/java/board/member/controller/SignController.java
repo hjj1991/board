@@ -1,5 +1,6 @@
 package board.member.controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -20,12 +21,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import board.api.advice.exception.CUserNotFoundException;
+import board.api.advice.exception.PasswordNotMatchException;
 import board.api.service.ResponseService;
 import board.configuration.security.JwtTokenProvider;
 import board.member.dto.MemberDto;
 import board.member.dto.MemberLoginDto;
 import board.member.entity.MemberEntity;
 import board.member.repository.JpaMemberRepository;
+import board.member.service.JpaMemberService;
 import board.model.response.CommonResult;
 import board.model.response.SingleResult;
 import io.swagger.annotations.Api;
@@ -47,13 +50,20 @@ public class SignController {
 
 	@ApiOperation(value = "로그인", notes = "아이디로그인을 한다.")
 	@PostMapping(value = "/signin")
-	public SingleResult<String> signin(@RequestBody MemberLoginDto memberLoginDto) {
+	public SingleResult<HashMap<String, String>> signin(@RequestBody MemberLoginDto memberLoginDto) {
 
 		MemberEntity user = jpaMemberRepository.findByUserId(memberLoginDto.getUserId()).orElseThrow(CUserNotFoundException::new);
 		if (!passwordEncoder.matches(memberLoginDto.getPassword(), user.getPassword()))
-			throw new CUserNotFoundException();
-
-		return responseService.getSingleResult(jwtTokenProvider.createToken(user.getUsername(), user.getRoles()));
+			throw new PasswordNotMatchException();
+		
+		HashMap<String, String> result = new HashMap<>();
+		result.put("X-AUTH-TOKEN", jwtTokenProvider.createToken(user.getUsername(), user.getRoles()));
+		result.put("name", user.getName());
+		result.put("nickName", user.getNickName());
+		result.put("emailAddr", user.getEmailAddr());
+		
+//		return responseService.getSingleResult(jwtTokenProvider.createToken(user.getUsername(), user.getRoles()));
+		return responseService.getSingleResult(result);
 	}
 
 	@ApiOperation(value = "가입", notes = "회원가입을 한다.")
