@@ -29,6 +29,7 @@ import board.member.dto.MemberLoginDto;
 import board.member.entity.MemberEntity;
 import board.member.repository.JpaMemberRepository;
 import board.member.service.JpaMemberService;
+import board.member.service.JpaSignService;
 import board.model.response.CommonResult;
 import board.model.response.SingleResult;
 import io.swagger.annotations.Api;
@@ -44,28 +45,28 @@ import lombok.RequiredArgsConstructor;
 public class SignController {
 
 	private final JpaMemberRepository jpaMemberRepository;
-	private final JwtTokenProvider jwtTokenProvider;
+	private final JpaSignService jpaSignService; 
+
 	private final ResponseService responseService;
 	private final PasswordEncoder passwordEncoder;
 
 	@ApiOperation(value = "로그인", notes = "아이디로그인을 한다.")
 	@PostMapping(value = "/signin")
-	public SingleResult<HashMap<String, String>> signin(@RequestBody MemberLoginDto memberLoginDto) {
+	public SingleResult<HashMap<String, String>> signin(@RequestBody MemberLoginDto memberLoginDto) throws Exception {
 
 		MemberEntity user = jpaMemberRepository.findByUserId(memberLoginDto.getUserId()).orElseThrow(CUserNotFoundException::new);
 		if (!passwordEncoder.matches(memberLoginDto.getPassword(), user.getPassword()))
 			throw new PasswordNotMatchException();
 		
-		HashMap<String, String> result = new HashMap<>();
-		result.put("X-AUTH-TOKEN", jwtTokenProvider.createToken(user.getUsername(), user.getRoles()));
-		result.put("name", user.getName());
-		result.put("nickName", user.getNickName());
-		result.put("emailAddr", user.getEmailAddr());
-		
-//		return responseService.getSingleResult(jwtTokenProvider.createToken(user.getUsername(), user.getRoles()));
-		return responseService.getSingleResult(result);
+		return responseService.getSingleResult(jpaSignService.signIn(user));
 	}
-
+	
+	@ApiOperation(value = "Access토큰 재발급", notes = "refreshToken을 이용하여 accessToken 재발급")
+	@PostMapping(value = "/tokenreissue")
+	public SingleResult<HashMap<String, String>> tokenReissue(@RequestBody String refreshToken) throws Exception {
+		return responseService.getSingleResult(jpaSignService.tokenReissue(refreshToken));
+	}
+ 
 	@ApiOperation(value = "가입", notes = "회원가입을 한다.")
 	@PutMapping(value = "/signup")
 	public CommonResult signin(@RequestBody @Valid MemberDto memberDto, BindingResult result) {

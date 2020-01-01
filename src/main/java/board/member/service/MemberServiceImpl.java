@@ -1,11 +1,13 @@
 package board.member.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import board.member.dto.MemberDto;
+import board.member.entity.MemberEntity;
 import board.member.mapper.MemberMapper;
 
 @Service
@@ -31,5 +33,6 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		memberMapper.signUp(memberDto);
 	}
+
 
 }

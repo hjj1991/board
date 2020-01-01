@@ -1,5 +1,6 @@
 package board.member.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import board.member.dto.MemberDto;
