@@ -26,13 +26,13 @@ public class ExceptionAdvice {
 //        return responseService.getFailResult();
 //    }
     @ExceptionHandler(CUserNotFoundException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     protected CommonResult userNotFoundException(HttpServletRequest request, CUserNotFoundException e) {
         return responseService.getFailResult(Integer.valueOf(getMessage("-1")), getMessage("사용자가 존재하지 않습니다."));
     }
     
     @ExceptionHandler(PasswordNotMatchException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     protected CommonResult passwordNotMatchExcepiton(HttpServletRequest request, PasswordNotMatchException e) {
         return responseService.getFailResult(Integer.valueOf(getMessage("-1")), getMessage("비밀번호가 일치하지 않습니다."));
     }
