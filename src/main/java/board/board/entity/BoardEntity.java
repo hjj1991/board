@@ -14,14 +14,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="t_jpa_board")
+@Table(name="t_board")
 @NoArgsConstructor
 @Data
 public class BoardEntity {
+	
+	@Column(nullable=false)
+	private int boardType = 0;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int boardIdx;
@@ -32,8 +38,11 @@ public class BoardEntity {
 	@Column(nullable=false)
 	private String contents;
 	
-	@Column(nullable=false)
+	@Column(nullable=false, columnDefinition = "int(11) default 0")
 	private int hitCnt = 0;
+	
+	@Column(nullable=false, columnDefinition = "varchar(255) default 'N'")
+	private String deletedYn;
 	
 	@Column(nullable=false)
 	private String creatorId;

@@ -35,7 +35,10 @@ public class JpaSignServiceImpl implements JpaSignService {
 	public HashMap<String, String> signIn(MemberEntity memberEntity) throws Exception {
 		
 		HashMap<String, String> result = new HashMap<>();
-		result.put("X-AUTH-TOKEN", jwtTokenProvider.createToken(memberEntity.getUsername(), memberEntity.getRoles()));
+		List<String> tokenInfo = new ArrayList<String>();
+		tokenInfo = jwtTokenProvider.createToken(memberEntity.getUsername(), memberEntity.getRoles());
+		result.put("X-AUTH-TOKEN", tokenInfo.get(0));
+		result.put("exAuthToken", tokenInfo.get(1));
 		result.put("X-REFRESH-TOKEN", jwtTokenProvider.createRefreshToken(memberEntity.getUsername(), memberEntity.getRoles()));
 		result.put("name", memberEntity.getName());
 		result.put("nickName", memberEntity.getNickName());
@@ -63,8 +66,12 @@ public class JpaSignServiceImpl implements JpaSignService {
 		
 		HashMap<String, String> result = new HashMap<String, String>();
 		
-		result.put("X-AUTH-TOKEN", jwtTokenProvider.createToken(jwtUserId,jwtRoles)); //가져온 정보로 토큰 재생성
+//		result.put("X-AUTH-TOKEN", jwtTokenProvider.createToken(jwtUserId,jwtRoles)); //가져온 정보로 토큰 재생성
 		
+		List<String> tokenInfo = new ArrayList<String>();
+		tokenInfo = jwtTokenProvider.createToken(jwtUserId,jwtRoles);
+		result.put("X-AUTH-TOKEN", tokenInfo.get(0));
+		result.put("exAuthToken", tokenInfo.get(1));
 		return result;
 	}
 }

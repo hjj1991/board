@@ -3,6 +3,7 @@ package board.configuration.security;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -50,16 +51,25 @@ public class JwtTokenProvider { // JWT 토큰을 생성 및 검증 모듈
 	}
 
 	// Jwt 토큰 생성
-	public String createToken(String userPk, List<String> roles) {
+	public List<String> createToken(String userPk, List<String> roles) {
 		Claims claims = Jwts.claims().setSubject(userPk);
 		System.out.println("으아아아!" + roles);
 		claims.put("roles", roles);
 		Date now = new Date();
-		return Jwts.builder().setClaims(claims) // 데이터
+		long expireTime = new Date().getTime() + tokenValidMilisecond;
+		String token = Jwts.builder().setClaims(claims) // 데이터
 				.setIssuedAt(now) // 토큰 발행일자
-				.setExpiration(new Date(now.getTime() + tokenValidMilisecond)) // set Expire Time
+				.setExpiration(new Date(expireTime)) // set Expire Time
 				.signWith(SignatureAlgorithm.HS256, secretKey) // 암호화 알고리즘, secret값 세팅
 				.compact();
+		
+		List<String> result = new ArrayList<String>();
+		
+		result.add(token);
+		result.add(String.valueOf(expireTime));
+		
+		return result;
+		
 	}
 	
 	public String createRefreshToken(String userPk, List<String> roles) {

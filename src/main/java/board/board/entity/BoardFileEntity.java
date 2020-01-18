@@ -13,7 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="t_jpa_file")
+@Table(name="t_file")
 @NoArgsConstructor
 @Data
 public class BoardFileEntity {
@@ -32,6 +32,9 @@ public class BoardFileEntity {
 	
 	@Column(nullable=false)
 	private String creatorId;
+	
+	@Column(nullable=false, columnDefinition = "varchar(255) default 'N'")
+	private String deletedYn;
 	
 	@Column(nullable=false)
 	private LocalDateTime createdDatetime = LocalDateTime.now();
