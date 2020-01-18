@@ -36,7 +36,7 @@ public class RestBoardApiController {
 	}
 
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
+		@ApiImplicitParam(name = "X_AUTH_TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
 	@RequestMapping(value = "/api/board/write", method = RequestMethod.POST)
 	public ResponseEntity<?> insertBoard(@RequestBody BoardDto board, BindingResult result) throws Exception {
 		if (result.hasErrors()) {
@@ -49,7 +49,7 @@ public class RestBoardApiController {
 			return new ResponseEntity<>(errorList, HttpStatus.BAD_REQUEST);
 		}
 		boardService.insertBoard(board, null);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>("Success", HttpStatus.OK);
 	}
 
 	// @RequestMapping(value="/api/board/", method=RequestMethod.GET) //url
@@ -62,7 +62,7 @@ public class RestBoardApiController {
 	}
 
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
+		@ApiImplicitParam(name = "X_AUTH_TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
 	@RequestMapping(value = "/api/board/{boardIdx}", method = RequestMethod.PUT)
 	public String updateBoard(@RequestBody BoardDto board) throws Exception {
 		boardService.updateBoard(board);
@@ -70,7 +70,7 @@ public class RestBoardApiController {
 	}
 
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
+		@ApiImplicitParam(name = "X_AUTH_TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
 	@RequestMapping(value = "/api/board/{boardIdx}", method = RequestMethod.DELETE)
 	public String deleteBoard(@PathVariable("boardIdx") int boardIdx) throws Exception {
 		boardService.deleteBoard(boardIdx);

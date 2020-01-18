@@ -118,11 +118,11 @@ public class JwtTokenProvider { // JWT 토큰을 생성 및 검증 모듈
 
 	// Request의 Header에서 token 파싱 : "X-AUTH-TOKEN: jwt토큰"
 	public String resolveToken(HttpServletRequest req) {
-		return req.getHeader("X-AUTH-TOKEN");
+		return req.getHeader("X_AUTH_TOKEN");
 	}
 	// Request의 Header에서 refreshToken 파싱 : "X-REFRESH-TOKEN: jwt토근"
 	public String resolveRefreshToken(HttpServletRequest req) {
-		return req.getHeader("X-REFRESH-TOKEN");
+		return req.getHeader("X_REFRESH_TOKEN");
 	}
 
 	// Jwt 토큰의 유효성 + 만료일자 확인

@@ -34,7 +34,7 @@ public class MemberController {
 	private final ResponseService responseService; // 결과를 처리할 Service
 
 	@ApiImplicitParams({
-			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
+			@ApiImplicitParam(name = "X_AUTH_TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
 	@ApiOperation(value = "회원 리스트 조회", notes = "모든 회원을 조회한다")
 	@GetMapping(value = "/users")
 	public ListResult<MemberEntity> findAllUser() {
@@ -43,7 +43,7 @@ public class MemberController {
 	}
 
 	@ApiImplicitParams({
-			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
+			@ApiImplicitParam(name = "X_AUTH_TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
 	@ApiOperation(value = "회원 단건 조회", notes = "userId로 회원을 조회한다")
 	@GetMapping(value = "/user/{userId}")
 	public SingleResult<MemberEntity> findUserById(
@@ -70,7 +70,7 @@ public class MemberController {
 	}
 
 	@ApiImplicitParams({
-			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
+			@ApiImplicitParam(name = "X_AUTH_TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
 	@ApiOperation(value = "회원 수정", notes = "회원정보를 수정한다")
 	@PutMapping(value = "/user")
 	public SingleResult<MemberEntity> modify(@ApiParam(value = "회원번호", required = true) @RequestParam long msrl,
@@ -82,7 +82,7 @@ public class MemberController {
 	}
 
 	@ApiImplicitParams({
-			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
+			@ApiImplicitParam(name = "X_AUTH_TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
 	@ApiOperation(value = "회원 삭제", notes = "userId로 회원정보를 삭제한다")
 	@DeleteMapping(value = "/user/{msrl}")
 	public CommonResult delete(@ApiParam(value = "회원번호", required = true) @PathVariable long msrl) {

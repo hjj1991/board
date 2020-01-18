@@ -17,6 +17,7 @@ public class ResponseService {
  
         int code;
         String msg;
+        String dfherth;
  
         CommonResponse(int code, String msg) {
             this.code = code;
@@ -36,6 +37,13 @@ public class ResponseService {
         SingleResult<T> result = new SingleResult<>();
         result.setData(data);
         setSuccessResult(result);
+        return result;
+    }
+    //성공, 실패 출력하지 않음
+    public <T> SingleResult<T> getSingleResult2(T data) {
+        SingleResult<T> result = new SingleResult<>();
+        result.setData(data);
+
         return result;
     }
     // 다중건 결과를 처리하는 메소드

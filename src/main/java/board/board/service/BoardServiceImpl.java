@@ -105,7 +105,7 @@ public class BoardServiceImpl implements BoardService {
 		int endNum = pagination.getPageSize();
 		String searchTarget = pagination.getSearchTarget();
 		String searchKeyword = pagination.getSearchKeyword();
-		int pageCount = (int)Math.ceil(boardMapper.getBoardListCnt(searchTarget, searchKeyword)/pagination.getPageSize()); //총페이지 수
+		int pageCount = (int)Math.ceil(boardMapper.getBoardListCnt(searchTarget, searchKeyword)/pagination.getPageSize() + 1); //총페이지 수
 		HashMap<String, String> links = new HashMap<String, String>();
 		String baseUrl = "http://localhost:8080/api/board?";
 		

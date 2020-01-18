@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -63,8 +64,8 @@ public class SignController {
 	
 	@ApiOperation(value = "Access토큰 재발급", notes = "refreshToken을 이용하여 accessToken 재발급")
 	@PostMapping(value = "/tokenreissue")
-	public SingleResult<HashMap<String, String>> tokenReissue(@RequestBody String refreshToken) throws Exception {
-		return responseService.getSingleResult(jpaSignService.tokenReissue(refreshToken));
+	public ResponseEntity<?> tokenReissue(@RequestBody Map<String, Object> param) throws Exception {
+		return new ResponseEntity<>(jpaSignService.tokenReissue((String)param.get("refreshToken")), HttpStatus.OK);
 	}
  
 	@ApiOperation(value = "가입", notes = "회원가입을 한다.")
