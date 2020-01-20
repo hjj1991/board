@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -36,6 +37,7 @@ public class BoardEntity {
 	private String title;
 	
 	@Column(nullable=false)
+	@Lob
 	private String contents;
 	
 	@Column(nullable=false, columnDefinition = "int(11) default 0")

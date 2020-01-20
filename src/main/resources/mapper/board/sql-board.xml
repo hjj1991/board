@@ -110,7 +110,7 @@
 				#{title},
 				#{contents},
 				NOW(),
-				'admin'
+				#{creatorId}
 			)
 		]]>			
 	</insert>
