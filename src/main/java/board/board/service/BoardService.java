@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import board.board.dto.BoardCommentDto;
 import board.board.dto.BoardDto;
 import board.board.dto.BoardFileDto;
+import board.board.dto.BoardRequestDto;
 import board.board.dto.RestBoardDto;
 import board.common.Pagination;
 
@@ -15,11 +16,11 @@ public interface BoardService {
 	
 	List<BoardDto> selectBoardList() throws Exception;
 
-	void insertBoard(BoardDto board, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception;
+	void insertBoard(BoardRequestDto board, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception;
 
 	BoardDto selectBoardDetail(int boardIdx) throws Exception;
 
-	void updateBoard(BoardDto board) throws Exception;
+	void updateBoard(BoardRequestDto board) throws Exception;
 	
 	void deleteBoard(int boardIdx) throws Exception;
 	

@@ -48,7 +48,7 @@ public class BoardController {
 	
 	@RequestMapping("/board/insertBoard.do")
 	public String insertBoard(BoardDto board, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception{
-		boardService.insertBoard(board, multipartHttpServletRequest);
+//		boardService.insertBoard(board, multipartHttpServletRequest);
 		return "redirect:/board/openBoardList.do";
 	}
 	
@@ -64,7 +64,7 @@ public class BoardController {
 	
 	@RequestMapping("/board/updateBoard.do")
 	public String updateBoard(BoardDto board) throws Exception{
-		boardService.updateBoard(board);
+//		boardService.updateBoard(board);
 		return "redirect:/board/openBoardList.do";
 	}
 	

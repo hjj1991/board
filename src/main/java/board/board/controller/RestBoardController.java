@@ -44,7 +44,7 @@ public class RestBoardController {
 	
 	@RequestMapping(value="/board/write", method=RequestMethod.POST)
 	public String insertBoard(BoardDto board, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception{
-		boardService.insertBoard(board, multipartHttpServletRequest);
+//		boardService.insertBoard(board, multipartHttpServletRequest);
 		return "redirect:/board";
 	}
 	
@@ -60,7 +60,7 @@ public class RestBoardController {
 	
 	@RequestMapping(value="/board/{boardIdx}", method=RequestMethod.PUT)
 	public String updateBoard(BoardDto board) throws Exception{
-		boardService.updateBoard(board);
+//		boardService.updateBoard(board);
 		return "redirect:/board";
 	}
 	

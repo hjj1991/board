@@ -18,10 +18,14 @@ import lombok.extern.slf4j.Slf4j;
 import board.board.dto.BoardCommentDto;
 import board.board.dto.BoardDto;
 import board.board.dto.BoardFileDto;
+import board.board.dto.BoardRequestDto;
 import board.board.dto.RestBoardDto;
 import board.board.mapper.BoardMapper;
+import board.board.repository.JpaBoardRepository;
 import board.common.FileUtils;
 import board.common.Pagination;
+import board.configuration.security.JwtTokenProvider;
+import board.member.repository.JpaMemberRepository;
 
 
 @Slf4j
@@ -31,9 +35,12 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Autowired
 	private FileUtils fileUtils;
-	
 	@Autowired
 	private BoardMapper boardMapper;
+	@Autowired
+	JpaMemberRepository jpaMemberRepository;
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
 	
 	@Override
 	public List<BoardDto> selectBoardList() throws Exception {
@@ -42,8 +49,17 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void insertBoard(BoardDto board, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
-		boardMapper.insertBoard(board);
+	public void insertBoard(BoardRequestDto board, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
+		BoardDto boardDto = new BoardDto();
+		//토큰정보 파싱하여 사용자 닉네임을 작성자로 넣어준다.
+//		board.setCreatorId(jpaMemberRepository.findByUserId(jwtTokenProvider.getUserPk(board.getAuthToken())).get().getNickName());
+		boardDto.setCreatorId(jpaMemberRepository.findByUserId(jwtTokenProvider.getUserPk(board.getAuthToken())).get().getNickName());
+		boardDto.setBoardIdx(board.getBoardIdx());
+		boardDto.setBoardType(board.getBoardType());
+		boardDto.setContents(board.getContents());
+		boardDto.setFileList(board.getFileList());
+		boardDto.setTitle(board.getTitle());
+		boardMapper.insertBoard(boardDto);
 		List<BoardFileDto> list = fileUtils.parseFileInfo(board.getBoardIdx(), multipartHttpServletRequest);
 		if(CollectionUtils.isEmpty(list) == false) {
 			boardMapper.insertBoardFileList(list);
@@ -80,8 +96,15 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void updateBoard(BoardDto board) throws Exception {
-		boardMapper.updateBoard(board);
+	public void updateBoard(BoardRequestDto board) throws Exception {
+		BoardDto boardDto = new BoardDto();
+		boardDto.setCreatorId(jpaMemberRepository.findByUserId(jwtTokenProvider.getUserPk(board.getAuthToken())).get().getNickName());
+		boardDto.setBoardIdx(board.getBoardIdx());
+		boardDto.setBoardType(board.getBoardType());
+		boardDto.setContents(board.getContents());
+		boardDto.setFileList(board.getFileList());
+		boardDto.setTitle(board.getTitle());
+		boardMapper.updateBoard(boardDto);
 		
 	}
 
