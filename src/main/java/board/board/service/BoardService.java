@@ -20,7 +20,7 @@ public interface BoardService {
 
 	BoardDto selectBoardDetail(int boardIdx) throws Exception;
 
-	void updateBoard(BoardRequestDto board) throws Exception;
+	boolean updateBoard(BoardRequestDto board) throws Exception;
 	
 	void deleteBoard(int boardIdx) throws Exception;
 	

@@ -22,7 +22,7 @@ public interface BoardMapper {
 
 	BoardDto selectBoardDetail(int boardIdx) throws Exception;
 
-	void updateBoard(BoardDto board) throws Exception;
+	int updateBoard(BoardDto board) throws Exception;
 
 	void deleteBoard(int boardIdx) throws Exception;
 

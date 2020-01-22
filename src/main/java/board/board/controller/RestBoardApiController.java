@@ -80,8 +80,13 @@ public class RestBoardApiController {
 		}
 		board.setAuthToken(authToken);
 		board.setBoardIdx(boardIdx);
-		boardService.updateBoard(board);
-		return new ResponseEntity<>("Success", HttpStatus.OK);
+		boolean returnValue = boardService.updateBoard(board);
+		if(returnValue == true) {
+			return new ResponseEntity<>("Success", HttpStatus.OK);
+		}else {
+			return new ResponseEntity<>("-1", HttpStatus.OK);
+		}
+		
 	}
 
 	@ApiImplicitParams({

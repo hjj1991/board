@@ -96,15 +96,27 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void updateBoard(BoardRequestDto board) throws Exception {
+	public boolean updateBoard(BoardRequestDto board) throws Exception {
 		BoardDto boardDto = new BoardDto();
-		boardDto.setCreatorId(jpaMemberRepository.findByUserId(jwtTokenProvider.getUserPk(board.getAuthToken())).get().getNickName());
-		boardDto.setBoardIdx(board.getBoardIdx());
-		boardDto.setBoardType(board.getBoardType());
-		boardDto.setContents(board.getContents());
-		boardDto.setFileList(board.getFileList());
-		boardDto.setTitle(board.getTitle());
-		boardMapper.updateBoard(boardDto);
+		int returnValue;
+		//작성자와 수정요청자의 닉네임이 같은지 비교하고 같으면 업데이트한다.
+		if(jpaMemberRepository.findByUserId(jwtTokenProvider.getUserPk(board.getAuthToken())).get().getNickName().equals(boardMapper.selectBoardDetail(board.getBoardIdx()).getCreatorId()) ) {
+			boardDto.setCreatorId(jpaMemberRepository.findByUserId(jwtTokenProvider.getUserPk(board.getAuthToken())).get().getNickName());
+			boardDto.setBoardIdx(board.getBoardIdx());
+			boardDto.setBoardType(board.getBoardType());
+			boardDto.setContents(board.getContents());
+			boardDto.setFileList(board.getFileList());
+			boardDto.setTitle(board.getTitle());
+			returnValue = boardMapper.updateBoard(boardDto);
+			if(returnValue == 1)
+				return true;
+			else {
+				return false;
+			}
+		}else {
+			return false;
+		}
+		
 		
 	}
 

@@ -48,7 +48,6 @@
 			SELECT
 				board_idx,
 				title,
-				contents,
 				creator_id,
 				hit_cnt,
 				DATE_FORMAT(created_datetime, '%Y.%m.%d') AS created_datetime
