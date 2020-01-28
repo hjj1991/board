@@ -40,7 +40,7 @@ public class JwtTokenProvider { // JWT 토큰을 생성 및 검증 모듈
 	@Value("spring.jwt.secret")
 	private String secretKey;
 
-	private long tokenValidMilisecond = 1000L * 60 * 20; // 1시간만 토큰 유효
+	private long tokenValidMilisecond = 1000L * 60 * 20; // 20분만 토큰 유효
 	private long refreshTokenValidMilisecond = 1000L * 60 * 1440 * 14; // 2주간 토큰 유효
 
 	private final UserDetailsService userDetailsService;
@@ -53,7 +53,6 @@ public class JwtTokenProvider { // JWT 토큰을 생성 및 검증 모듈
 	// Jwt 토큰 생성
 	public List<String> createToken(String userPk, List<String> roles) {
 		Claims claims = Jwts.claims().setSubject(userPk);
-		System.out.println("으아아아!" + roles);
 		claims.put("roles", roles);
 		Date now = new Date();
 		long expireTime = new Date().getTime() + tokenValidMilisecond;
@@ -87,7 +86,7 @@ public class JwtTokenProvider { // JWT 토큰을 생성 및 검증 모듈
 				.signWith(SignatureAlgorithm.HS256, secretKey) // 암호화 알고리즘, secret값 세팅
 				.compact();
 		
-		if(jpaTokenRepository.existsByUserId(userPk)) {
+		if(jpaTokenRepository.existsByUserId(userPk)) {		//토큰 저장소에 리프레쉬토큰이 있다면 토큰 유효기간 업데이트
 			TokenEntity updateTokenEntity = jpaTokenRepository.findByUserId(userPk);
 			updateTokenEntity.setExpiredDatetime(expiredDate);
 			updateTokenEntity.setRefreshToken(refreshToken);
@@ -131,6 +130,19 @@ public class JwtTokenProvider { // JWT 토큰을 생성 및 검증 모듈
 			Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
 			return !claims.getBody().getExpiration().before(new Date());
 		} catch (Exception e) {
+			return false;
+		}
+	}
+	// Jwt 토큰의 유효성 + 만료일자 확인
+	public boolean validateRefreshToken(String jwtToken) {
+		if(jpaTokenRepository.findByRefreshToken(jwtToken) != null) {
+			try {
+				Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+				return !claims.getBody().getExpiration().before(new Date());
+			} catch (Exception e) {
+				return false;
+			}
+		}else {
 			return false;
 		}
 	}

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,6 +36,7 @@ import board.model.response.CommonResult;
 import board.model.response.SingleResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
@@ -60,6 +62,11 @@ public class SignController {
 			throw new PasswordNotMatchException();
 		
 		return responseService.getSingleResult(jpaSignService.signIn(user));
+	}
+	@ApiOperation(value = "로그아웃", notes = "로그아웃을 한다.")
+	@PostMapping(value = "/signout")
+	public ResponseEntity<?> signout(@RequestHeader("X_REFRESH_TOKEN") String refreshToken) throws Exception {
+		return new ResponseEntity<>(jpaSignService.signOut(refreshToken), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "Access토큰 재발급", notes = "refreshToken을 이용하여 accessToken 재발급")

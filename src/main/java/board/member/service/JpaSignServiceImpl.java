@@ -50,6 +50,23 @@ public class JpaSignServiceImpl implements JpaSignService {
 		
 		return result;
 	}
+	@Override
+	public HashMap<String, String> signOut(String refreshToken) throws Exception {
+		String jwtUserId = null;
+		HashMap<String, String> result = new HashMap<String, String>();
+		if(jwtTokenProvider.validateRefreshToken(refreshToken)) {	//리프레쉬 토큰 검증 후 토큰 디코딩하여 정보가져옴
+			jwtUserId = Jwts.parser().setSigningKey(secretKey.getBytes("UTF-8")).parseClaimsJws(refreshToken).getBody().getSubject();
+			jpaTokenRepository.deleteById(jwtUserId);
+			result.put("success",  "true");
+		}else {
+			result.put("code", "999");
+		}
+		
+		return result;
+		
+//		result.put("X-AUTH-TOKEN", jwtTokenProvider.createToken(jwtUserId,jwtRoles)); //가져온 정보로 토큰 재생성
+		
+	}
 
 	@Override
 	public HashMap<String, String> tokenReissue(String refreshToken) throws Exception {
@@ -57,9 +74,9 @@ public class JpaSignServiceImpl implements JpaSignService {
 		String jwtUserId = null;
 		HashMap<String, String> result = new HashMap<String, String>();
 		List<String> tokenInfo = new ArrayList<String>();
-		if(jwtTokenProvider.validateToken(refreshToken)) {	//리프레쉬 토큰 검증 후 토큰 디코딩하여 정보가져옴
+		if(jwtTokenProvider.validateRefreshToken(refreshToken)) {	//리프레쉬 토큰 검증 후 토큰 디코딩하여 정보가져옴
 			TokenEntity tokenEntity = jpaTokenRepository.findByRefreshToken(refreshToken);
-			jwtRoles.add(Jwts.parser().setSigningKey(secretKey.getBytes("UTF-8")).parseClaimsJws(refreshToken).getBody().get("roles").toString().replace("[", "").replace("]", ""));
+			jwtRoles.add(Jwts.parser().setSigningKey(secretKey.getBytes("UTF-8")).parseClaimsJws(refreshToken).getBody().get("roles").toString().replace("[", "").replace("]", ""));	//토큰 해석하여 유저 권한 넣어줌
 			jwtUserId = Jwts.parser().setSigningKey(secretKey.getBytes("UTF-8")).parseClaimsJws(refreshToken).getBody().getSubject();
 			tokenInfo = jwtTokenProvider.createToken(jwtUserId,jwtRoles);
 			result.put("code", "1");
@@ -73,7 +90,5 @@ public class JpaSignServiceImpl implements JpaSignService {
 		
 //		result.put("X-AUTH-TOKEN", jwtTokenProvider.createToken(jwtUserId,jwtRoles)); //가져온 정보로 토큰 재생성
 		
-		
-
 	}
 }

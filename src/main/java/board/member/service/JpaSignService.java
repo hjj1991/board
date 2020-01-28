@@ -9,4 +9,6 @@ public interface JpaSignService {
 	HashMap<String, String> tokenReissue(String refreshToken) throws Exception;
 
 	HashMap<String, String> signIn(MemberEntity memberEntity) throws Exception;
+
+	HashMap<String, String> signOut(String refreshToken) throws Exception;
 }

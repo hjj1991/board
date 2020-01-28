@@ -2,17 +2,21 @@ package board.member.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import board.api.advice.exception.CUserNotFoundException;
 import board.api.service.ResponseService;
+import board.configuration.security.JwtTokenProvider;
 import board.member.entity.MemberEntity;
 import board.member.repository.JpaMemberRepository;
 import board.model.response.CommonResult;
@@ -32,6 +36,8 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 	private final JpaMemberRepository jpaMemberRepo;
 	private final ResponseService responseService; // 결과를 처리할 Service
+	@Autowired
+	JwtTokenProvider jwtTokenProvider;
 
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "X_AUTH_TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
@@ -45,11 +51,10 @@ public class MemberController {
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "X_AUTH_TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
 	@ApiOperation(value = "회원 단건 조회", notes = "userId로 회원을 조회한다")
-	@GetMapping(value = "/user/{userId}")
-	public SingleResult<MemberEntity> findUserById(
-			@ApiParam(value = "회원ID", required = true) @PathVariable String userId) {
+	@RequestMapping(value = "/user", method = RequestMethod.GET)
+	public SingleResult<MemberEntity> findUserById(@RequestHeader("X_AUTH_TOKEN") String authToken) {
 		// 결과데이터가 단일건인경우 getBasicResult를 이용해서 결과를 출력한다.
-		return responseService.getSingleResult(jpaMemberRepo.findByUserId(userId).orElseThrow(CUserNotFoundException::new));
+		return responseService.getSingleResult(jpaMemberRepo.findByUserId(jwtTokenProvider.getUserPk(authToken)).orElseThrow(CUserNotFoundException::new));
 	}
 
 	@ApiOperation(value = "회원 입력", notes = "회원을 입력한다")
